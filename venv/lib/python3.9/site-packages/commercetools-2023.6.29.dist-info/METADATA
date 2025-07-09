@@ -1,0 +1,141 @@
+Metadata-Version: 2.1
+Name: commercetools
+Version: 2023.6.29
+Summary: SDK for Commercetools
+Home-page: https://github.com/labd/commercetools-python-sdk
+Author: Lab Digital B.V.
+Author-email: opensource@labdigital.nl
+License: MIT
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: Implementation :: CPython
+License-File: LICENSE
+Requires-Dist: requests (>=2.7.0)
+Requires-Dist: pytz
+Requires-Dist: requests-oauthlib (>=1.0.0)
+Requires-Dist: requests-mock (>=1.8.0)
+Requires-Dist: marshmallow (>=3.10.0)
+Requires-Dist: marshmallow-enum (>=1.5.1)
+Requires-Dist: WebOb (>=1.8.0)
+Requires-Dist: Werkzeug (>=0.15.2)
+Requires-Dist: wrapt (>=1.10.0)
+Provides-Extra: docs
+Requires-Dist: Sphinx (==7.0.1) ; extra == 'docs'
+Requires-Dist: sphinx-autodoc-typehints (==1.23.3) ; extra == 'docs'
+Requires-Dist: m2r2 (==0.3.1) ; extra == 'docs'
+Provides-Extra: test
+Requires-Dist: freezegun (==1.2.0) ; extra == 'test'
+Requires-Dist: mock (==4.0.3) ; extra == 'test'
+Requires-Dist: pretend (==1.0.9) ; extra == 'test'
+Requires-Dist: coverage[toml] (>=6.2) ; extra == 'test'
+Requires-Dist: pytest-cov (==3.0.0) ; extra == 'test'
+Requires-Dist: pytest (==7.0.1) ; extra == 'test'
+Requires-Dist: isort (==5.10.1) ; extra == 'test'
+Requires-Dist: flake8 (==4.0.1) ; extra == 'test'
+Requires-Dist: flake8-blind-except (==0.2.0) ; extra == 'test'
+Requires-Dist: flake8-debugger (==4.0.0) ; extra == 'test'
+Requires-Dist: flake8-imports (==0.1.1) ; extra == 'test'
+Requires-Dist: mypy (==0.931) ; extra == 'test'
+
+
+
+
+Python SDK for Commercetools
+============================
+
+This is an unofficial Python SDK for the Commercetools platform. It only
+supports Python 3.6+ and uses type annotation for an improved development
+experience.
+
+The API is generated using the commercetools api RAML file and uses
+marshmallow for the serialization and deserialization.
+
+Installation
+------------
+
+    pip install commercetools
+
+Example
+-------
+
+.. code-block:: python
+
+    from commercetools.platform import Client
+
+    client = Client(
+        client_id="<your-client-id>",
+        client_secret="<your-client-secret>",
+        scope=["<scopes>"],
+        url="https://api.europe-west1.gcp.commercetools.com",
+        token_url="https://auth.europe-west1.gcp.commercetools.com",
+    )
+
+    product = (
+        client
+        .with_project_key("<your-project-key>")
+        .products()
+        .with_id("00633d11-c5bb-434e-b132-73f7e130b4e3")
+        .get())
+    print(product)
+
+The client can also be configured by setting the following environment
+variables:
+
+.. code-block:: sh
+
+    export CTP_CLIENT_SECRET="<client secret>"
+    export CTP_CLIENT_ID="<client id>"
+    export CTP_AUTH_URL="https://api.europe-west1.gcp.commercetools.com"
+    export CTP_API_URL="https://auth.europe-west1.gcp.commercetools.com"
+    export CTP_SCOPES="<comma seperated list of scopes>"
+
+And then constructing a client without arguments:
+
+.. code-block:: python
+
+    from commercetools.platform import Client
+
+    client = Client()
+
+    product = (
+        client
+        .with_project_key("<your-project-key>")
+        .products()
+        .with_id("00633d11-c5bb-434e-b132-73f7e130b4e3")
+        .get())
+
+    print(product)
+
+
+Releasing
+---------
+
+To release this package first (pip) install bump2version and update the
+CHANGES file. Then update the version (either major/minor/patch depending on
+the change)
+
+
+.. code-block:: sh
+
+    bumpversion --tag <major,minor,patch>
+
+bumpversion is naive because it string replaces, so do a sanity check it
+didn't accidentally update a Pypi dependency. If not, push the code:
+
+
+.. code-block:: sh
+
+    git push --follow-tags
+
+We use GitHub actions so make sure the build succeeds and then go to the tags
+tab (https://github.com/labd/commercetools-python-sdk/tags).
+
+Click the dots to trigger a release action. Copy the changelog items in the
+release description and enter the release version. This will upload the
+release to PyPi.
+
