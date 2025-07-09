@@ -1,0 +1,11 @@
+# Git ignore file
+# Node.js
+node_modules/
+npm-debug.log*
+*.tgz
+
+# TypeScript
+*.tsbuildinfo
+
+# Environents
+.env
